@@ -26,7 +26,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; 
 renderer.outputEncoding = THREE.sRGBEncoding; //these lines =^ line just to make sure that its possible to display render properly in device
-renderer.setClearColor(0x494B49, 1);
+renderer.setClearColor(0x53565A, 1);
 document.body.appendChild(renderer.domElement);
 
 const pointLight = new THREE.PointLight(0xffffff);
@@ -105,7 +105,7 @@ let envmap;
     let planeMesh = new Mesh(
         planeGeometries,
         new MeshStandardMaterial({
-            color: 0xFF0000,
+            color: 0x4D0011,
             envMap: envmap,
             flatShading: true,
             side: THREE.DoubleSide
@@ -117,7 +117,7 @@ let envmap;
     let warehouseMesh = new Mesh(
         warehouseGeometries,
         new MeshStandardMaterial({
-            color: 0xFFFFFF,
+            color: 0xE4E5E8,
             envMap: envmap,
             flatShading: true,
         })
@@ -170,7 +170,7 @@ function makeWarehouse(height, position) {
 let planeGeometries = new THREE.BoxGeometry(0,0,0);
 
 function planeGeometry(height, position) {
-    let geo = new THREE.CircleGeometry(3, 32);
+    let geo = new THREE.CircleGeometry(2, 32);
     geo.rotateX(-Math.PI * 0.5);
     geo.translate(position.x, height, position.y);
     
