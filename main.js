@@ -10,15 +10,9 @@ const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.47
 const latitudes = [-42.6618, -36.7615, 50.0000, -19.4217, -22.8394, -50.0000, -21.2052, -24.9214, -7.4403, -43.0783, -10.3708, -45.1446, -10.6851, -49.6622, -22.5016, -9.6952, -27.5927];
 const heights = [15.6250, 34.3750, 12.5000, 43.7500, 21.8750, 46.8750, 0.0000, 37.5000, 25.0000, 6.2500, 40.6250, 18.7500, 28.1250, 3.1250, 50.0000, 9.3750, 31.2500];
 
-console.log(names.length);
-console.log(longitudes.length);
-console.log(latitudes.length);
-console.log(heights.length);
-
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 camera.position.z = 30;
-
 
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg'),
@@ -44,7 +38,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,0,0); //make sure that camera is looking at the origin of the scene
 controls.dampingFactor = 0.05; 
 controls.enableDamping = true; // these lines =^ smoothen out the movement of camera
-
 
 // function createCylinder(x,y,z) {
 //     const geometry = new THREE.CylinderGeometry(5, 5, y, 6, y);
@@ -98,7 +91,7 @@ let envmap;
     for(let i = 0; i < 17; i++){ 
         let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));            
         makeWarehouse(Math.round(heights[i]/2), position);
-        makePlane(Math.round(heights[i]/2), position);
+        makePlane(Math.round(heights[i]/2) + 0.01, position); // flicking bug solved in dummy way
         
     }
 
