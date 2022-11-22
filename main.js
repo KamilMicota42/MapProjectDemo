@@ -5,6 +5,16 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Mesh, MeshStandardMaterial, Vector2 } from 'three';
 import SimplexNoise from 'https://cdn.skypack.dev/simplex-noise@3.0.0';
 
+const names = ["Arouca", "Espinho", "Gondomar", "Maia", "Matosinhos", "Oliveira de Azeméis", "Paredes", "Porto", "Póvoa de Varzim", "Santa Maria da Feira", "Santo Tirso", "São João da Madeira", "Trofa", "Vale de Cambra", "Valongo", "Vila do Conde", "Vila Nova de Gaia"];
+const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.4754, 24.3898, 49.9225, 8.7369, -5.6955, -2.4215, 11.0035, -20.8446, -0.9492, 47.4041, 21.0384];
+const latitudes = [-42.6618, -36.7615, 50.0000, -19.4217, -22.8394, -50.0000, -21.2052, -24.9214, -7.4403, -43.0783, -10.3708, -45.1446, -10.6851, -49.6622, -22.5016, -9.6952, -27.5927];
+const heights = [15.6250, 34.3750, 12.5000, 43.7500, 21.8750, 46.8750, 0.0000, 37.5000, 25.0000, 6.2500, 40.6250, 18.7500, 28.1250, 3.1250, 50.0000, 9.3750, 31.2500];
+
+console.log(names.length);
+console.log(longitudes.length);
+console.log(latitudes.length);
+console.log(heights.length);
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 camera.position.z = 30;
@@ -61,42 +71,41 @@ let envmap;
     let envmapTexture = await new RGBELoader().setDataType(THREE.FloatType).loadAsync("assets/envmap.hdr");
     envmap = pmrem.fromEquirectangular(envmapTexture).texture;
 
-    const simplex = new SimplexNoise();
+    // const simplex = new SimplexNoise();
 
-    for(let i = -30; i <= 30; i++){ 
-        for(let j = -30; j <= 30; j++){ // ^= amount of Hexagones
-            let position = tileToPosition(i,j);
-            if(position.length() > 40) continue; //radius of the map
+    // for(let i = -50; i <= 50; i++){ 
+    //     for(let j = -50; j <= 50; j++){ // ^= amount of Hexagones
+    //         let position = tileToPosition(i,j);
+    //         // if(position.length() > 20) continue; //radius of the map
 
-            let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
-            noise = Math.pow(noise, 1.5);
+    //         let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
+    //         noise = Math.pow(noise, 1.5);
 
-            makeHex(noise * 10, position);
-        }
-    }
+    //         makeHex(noise * 10, position);
+    //     }
+    // }
 
-    let hexagonMesh = new Mesh(
-        hexagonGeometries,
-        new MeshStandardMaterial({
-            color: 0x000000,
-            envMap: envmap,
-            flatShading: true
-        })
-    )
-    scene.add(hexagonMesh);
+    // let hexagonMesh = new Mesh(
+    //     hexagonGeometries,
+    //     new MeshStandardMaterial({
+    //         color: 0x000000,
+    //         envMap: envmap,
+    //         flatShading: true
+    //     })
+    // )
+    // scene.add(hexagonMesh);
 
-    for(let i = -10; i <= 10; i++){ 
-        let position = tileToPosition(i, Math.floor(Math.random() * -30) + 15);
-        if(position.length() > 40) continue; //radius of the map
+    for(let i = 0; i < 17; i++){ 
+        let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));
         
-        makeWarehouse(10, position);
+        makeWarehouse(Math.round(heights[i]), position);
         
     }
 
     let warehouseMesh = new Mesh(
         warehouseGeometries,
         new MeshStandardMaterial({
-            color: 0xFFFFFF,
+            color: 0x000000,
             envMap: envmap,
             flatShading: true
         })
