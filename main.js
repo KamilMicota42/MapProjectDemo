@@ -26,7 +26,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; 
 renderer.outputEncoding = THREE.sRGBEncoding; //these lines =^ line just to make sure that its possible to display render properly in device
-renderer.setClearColor(0x007500, 1);
+renderer.setClearColor(0x494B49, 1);
 document.body.appendChild(renderer.domElement);
 
 const pointLight = new THREE.PointLight(0xffffff);
@@ -76,7 +76,7 @@ let envmap;
     for(let i = -20; i <= 20; i++){ 
         for(let j = -20; j <= 20; j++){ // ^= amount of Hexagones
             let position = tileToPosition(i,j);
-            if(position.length() > 20) continue; //radius of the map
+            if(position.length() > 19) continue; //radius of the map
 
             let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
             noise = Math.pow(noise, 1.5);
@@ -170,7 +170,7 @@ function makeWarehouse(height, position) {
 let planeGeometries = new THREE.BoxGeometry(0,0,0);
 
 function planeGeometry(height, position) {
-    let geo = new THREE.PlaneGeometry(3,3);
+    let geo = new THREE.CircleGeometry(3, 32);
     geo.rotateX(-Math.PI * 0.5);
     geo.translate(position.x, height, position.y);
     
