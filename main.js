@@ -65,15 +65,13 @@ let envmap;
 
     for(let i = -30; i <= 30; i++){ 
         for(let j = -30; j <= 30; j++){ // ^= amount of Hexagones
-            if (j != 0) {
-                let position = tileToPosition(i,j);
-                if(position.length() > 40) continue; //radius of the map
+            let position = tileToPosition(i,j);
+            if(position.length() > 40) continue; //radius of the map
 
-                let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
-                noise = Math.pow(noise, 1.5);
+            let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
+            noise = Math.pow(noise, 1.5);
 
-                makeHex(noise * 10, position);
-            }
+            makeHex(noise * 10, position);
         }
     }
 
@@ -87,13 +85,12 @@ let envmap;
     )
     scene.add(hexagonMesh);
 
-    for(let i = -30; i <= 30; i++){ 
-        for(let j = 0; j <= 0; j++){ // ^= amount of Hexagones
-            let position = tileToPosition(i,j);
-            if(position.length() > 40) continue; //radius of the map
-
-            makeWarehouse(15, position);
-        }
+    for(let i = -10; i <= 10; i++){ 
+        let position = tileToPosition(i, Math.floor(Math.random() * -30) + 15);
+        if(position.length() > 40) continue; //radius of the map
+        
+        makeWarehouse(10, position);
+        
     }
 
     let warehouseMesh = new Mesh(
