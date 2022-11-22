@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { Mesh, MeshStandardMaterial, Vector2 } from 'three';
+import { DoubleSide, Material, Mesh, MeshStandardMaterial, Vector2 } from 'three';
 import SimplexNoise from 'https://cdn.skypack.dev/simplex-noise@3.0.0';
 
 const names = ["Arouca", "Espinho", "Gondomar", "Maia", "Matosinhos", "Oliveira de Azeméis", "Paredes", "Porto", "Póvoa de Varzim", "Santa Maria da Feira", "Santo Tirso", "São João da Madeira", "Trofa", "Vale de Cambra", "Valongo", "Vila do Conde", "Vila Nova de Gaia"];
@@ -71,46 +71,60 @@ let envmap;
     let envmapTexture = await new RGBELoader().setDataType(THREE.FloatType).loadAsync("assets/envmap.hdr");
     envmap = pmrem.fromEquirectangular(envmapTexture).texture;
 
-    // const simplex = new SimplexNoise();
+    const simplex = new SimplexNoise();
 
-    // for(let i = -50; i <= 50; i++){ 
-    //     for(let j = -50; j <= 50; j++){ // ^= amount of Hexagones
-    //         let position = tileToPosition(i,j);
-    //         // if(position.length() > 20) continue; //radius of the map
+    for(let i = -20; i <= 20; i++){ 
+        for(let j = -20; j <= 20; j++){ // ^= amount of Hexagones
+            let position = tileToPosition(i,j);
+            if(position.length() > 20) continue; //radius of the map
 
-    //         let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
-    //         noise = Math.pow(noise, 1.5);
+            let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
+            noise = Math.pow(noise, 1.5);
 
-    //         makeHex(noise * 10, position);
-    //     }
-    // }
-
-    // let hexagonMesh = new Mesh(
-    //     hexagonGeometries,
-    //     new MeshStandardMaterial({
-    //         color: 0x000000,
-    //         envMap: envmap,
-    //         flatShading: true
-    //     })
-    // )
-    // scene.add(hexagonMesh);
-
-    for(let i = 0; i < 17; i++){ 
-        let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));
-        
-        makeWarehouse(Math.round(heights[i]), position);
-        
+            makeHex(noise * 10, position);
+        }
     }
 
-    let warehouseMesh = new Mesh(
-        warehouseGeometries,
+    let hexagonMesh = new Mesh(
+        hexagonGeometries,
         new MeshStandardMaterial({
             color: 0x000000,
             envMap: envmap,
             flatShading: true
         })
     )
+    scene.add(hexagonMesh);
+
+    for(let i = 0; i < 17; i++){ 
+        let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));            
+        makeWarehouse(Math.round(heights[i]/2), position);
+        makePlane(Math.round(heights[i]/2), position);
+        
+    }
+
+    let planeMesh = new Mesh(
+        planeGeometries,
+        new MeshStandardMaterial({
+            color: 0xFF0000,
+            envMap: envmap,
+            flatShading: true,
+            side: THREE.DoubleSide
+        })
+        
+    )
+    scene.add(planeMesh);
+
+    let warehouseMesh = new Mesh(
+        warehouseGeometries,
+        new MeshStandardMaterial({
+            color: 0xFFFFFF,
+            envMap: envmap,
+            flatShading: true,
+        })
+    )
     scene.add(warehouseMesh);
+
+
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -141,4 +155,29 @@ let warehouseGeometries = new THREE.BoxGeometry(0,0,0);
 function makeWarehouse(height, position) {
     let geo = hexGeometry(height, position);
     warehouseGeometries = mergeBufferGeometries([warehouseGeometries, geo]);
+}
+
+// function makePlane(x,y,z) {
+//     const geometry = new THREE.PlaneGeometry(6, 6);
+//     const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+//     const plane = new THREE.Mesh( geometry, material );
+//     plane.position.setX(x);
+//     plane.position.setY(y);
+//     plane.position.setZ(z);
+//     scene.add(plane);
+// }
+
+let planeGeometries = new THREE.BoxGeometry(0,0,0);
+
+function planeGeometry(height, position) {
+    let geo = new THREE.PlaneGeometry(3,3);
+    geo.rotateX(-Math.PI * 0.5);
+    geo.translate(position.x, height, position.y);
+    
+    return geo;
+}
+
+function makePlane(height, position) {
+    let geo = planeGeometry(height, position);
+    planeGeometries = mergeBufferGeometries([planeGeometries, geo]);
 }
