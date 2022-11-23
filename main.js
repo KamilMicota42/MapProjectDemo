@@ -2,8 +2,22 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import { DoubleSide, Material, Mesh, MeshStandardMaterial, Vector2 } from 'three';
 import SimplexNoise from 'https://cdn.skypack.dev/simplex-noise@3.0.0';
+
+// Pallete used in project
+// Cool Gray
+// #E4E5E8
+
+// Gunmetal Gray
+// #53565A
+
+// Burgundy
+// #4D0011
+
+// Olive Green
+// #4B443C
+
+
 
 const names = ["Arouca", "Espinho", "Gondomar", "Maia", "Matosinhos", "Oliveira de Azeméis", "Paredes", "Porto", "Póvoa de Varzim", "Santa Maria da Feira", "Santo Tirso", "São João da Madeira", "Trofa", "Vale de Cambra", "Valongo", "Vila do Conde", "Vila Nova de Gaia"];
 const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.4754, 24.3898, 49.9225, 8.7369, -5.6955, -2.4215, 11.0035, -20.8446, -0.9492, 47.4041, 21.0384];
@@ -78,38 +92,25 @@ let envmap;
         }
     }
 
-    let hexagonMesh = new Mesh(
+    let hexagonMesh = new THREE.Mesh(
         hexagonGeometries,
-        new MeshStandardMaterial({
+        new THREE.MeshStandardMaterial({
             color: 0x000000,
             envMap: envmap,
             flatShading: true
         })
     )
-    scene.add(hexagonMesh);
-
-    for(let i = 0; i < 17; i++){ 
-        let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));            
-        makeWarehouse(Math.round(heights[i]/2), position);
-        makePlane(Math.round(heights[i]/2) + 0.01, position); // flicking bug solved in dummy way
+    scene.add(hexagonMesh);         
         
+    for(let i = 0; i < 17; i++){ 
+        let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));   
+        makeWarehouse(Math.round(heights[i]/2), position);
+        makeCircle(Math.round(heights[i]/2) + 0.01, position); // flicking bug solved in dummy way
     }
 
-    let planeMesh = new Mesh(
-        planeGeometries,
-        new MeshStandardMaterial({
-            color: 0x4D0011,
-            envMap: envmap,
-            flatShading: true,
-            side: THREE.DoubleSide
-        })
-        
-    )
-    scene.add(planeMesh);
-
-    let warehouseMesh = new Mesh(
+    let warehouseMesh = new THREE.Mesh(
         warehouseGeometries,
-        new MeshStandardMaterial({
+        new THREE.MeshStandardMaterial({
             color: 0xE4E5E8,
             envMap: envmap,
             flatShading: true,
@@ -117,6 +118,19 @@ let envmap;
     )
     scene.add(warehouseMesh);
 
+    let circleMesh = new THREE.Mesh(
+        circleGeometries,
+        new THREE.MeshStandardMaterial({
+            color: 0x4D0011,
+            envMap: envmap,
+            flatShading: true,
+            side: THREE.DoubleSide
+        })
+        
+    )
+    scene.add(circleMesh);
+    
+    makePath();
 
 
     renderer.setAnimationLoop(() => {
@@ -126,7 +140,7 @@ let envmap;
 })();
 
 function tileToPosition(tileX, tileY) {
-    return new Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535);
+    return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535);
 }
 
 let hexagonGeometries = new THREE.BoxGeometry(0,0,0);
@@ -160,17 +174,59 @@ function makeWarehouse(height, position) {
 //     scene.add(plane);
 // }
 
-let planeGeometries = new THREE.BoxGeometry(0,0,0);
+let circleGeometries = new THREE.BoxGeometry(0,0,0);
 
-function planeGeometry(height, position) {
-    let geo = new THREE.CircleGeometry(2, 32);
+function circleGeometry(height, position) {
+    let geo = new THREE.CircleGeometry(1, 32);
     geo.rotateX(-Math.PI * 0.5);
     geo.translate(position.x, height, position.y);
     
     return geo;
 }
 
-function makePlane(height, position) {
-    let geo = planeGeometry(height, position);
-    planeGeometries = mergeBufferGeometries([planeGeometries, geo]);
+function makeCircle(height, position) {
+    let geo = circleGeometry(height, position);
+    circleGeometries = mergeBufferGeometries([circleGeometries, geo]);
+}
+
+// let linkElementGeometries = new THREE.BoxGeometry(0,0,0);
+
+// function linkElementGeometry(height, position) {
+//     let geo = new THREE.PlaneGeometry(1, 2);
+//     geo.rotateX(-Math.PI * 0.5);
+//     geo.translate(position.x, height, position.y);
+    
+//     return geo;
+// }
+
+// function makeLinkElement(height, position) {
+//     let geo = linkElementGeometry(height, position);
+//     linkElementGeometries = mergeBufferGeometries([linkElementGeometries, geo]);
+// }
+
+function makePath() {
+    let position1 = tileToPosition(Math.round(latitudes[0]), Math.round(longitudes[0])); 
+    let position2 = tileToPosition(Math.round(latitudes[5]), Math.round(longitudes[5])); 
+    const points = [];
+    points.push( new THREE.Vector3( position1.x - 0.5, Math.round(heights[0]/2), position1.y) );
+    points.push( new THREE.Vector3( position2.x - 0.5, Math.round(heights[5]/2), position2.y) );
+    points.push( new THREE.Vector3( position1.x + 0.5, Math.round(heights[0]/2), position1.y) );
+    points.push( new THREE.Vector3( position2.x + 0.5, Math.round(heights[5]/2), position2.y) );
+    const indices = [0, 1, 2, 3, 4];
+    const path = new THREE.BufferGeometry()
+    .setFromPoints( points );
+    path.setIndex(new THREE.BufferAttribute(
+    new Uint16Array(indices), 1));
+    
+    let pathMesh = new THREE.Mesh(
+        path,
+        new THREE.MeshStandardMaterial({
+            color: 0x000000,
+            envMap: envmap,
+            flatShading: true,
+            side: THREE.DoubleSide
+        })
+    )
+
+    scene.add(pathMesh);
 }
