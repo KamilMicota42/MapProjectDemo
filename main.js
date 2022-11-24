@@ -45,8 +45,9 @@ scene.add(pointLight, ambientLight);
 
 const lightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(200,50);
+const axesHelper = new THREE.AxesHelper( 50 );
 
-scene.add(lightHelper, gridHelper);
+scene.add(lightHelper, gridHelper, axesHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,0,0); //make sure that camera is looking at the origin of the scene
@@ -130,7 +131,7 @@ let envmap;
     )
     scene.add(circleMesh);
     
-    makePath();
+    makePath(10, 12);
 
 
     renderer.setAnimationLoop(() => {
@@ -204,29 +205,57 @@ function makeCircle(height, position) {
 //     linkElementGeometries = mergeBufferGeometries([linkElementGeometries, geo]);
 // }
 
-function makePath() {
-    let position1 = tileToPosition(Math.round(latitudes[0]), Math.round(longitudes[0])); 
-    let position2 = tileToPosition(Math.round(latitudes[5]), Math.round(longitudes[5])); 
-    const points = [];
-    points.push( new THREE.Vector3( position1.x - 0.5, Math.round(heights[0]/2), position1.y) );
-    points.push( new THREE.Vector3( position2.x - 0.5, Math.round(heights[5]/2), position2.y) );
-    points.push( new THREE.Vector3( position1.x + 0.5, Math.round(heights[0]/2), position1.y) );
-    points.push( new THREE.Vector3( position2.x + 0.5, Math.round(heights[5]/2), position2.y) );
-    const indices = [0, 1, 2, 3, 4];
-    const path = new THREE.BufferGeometry()
-    .setFromPoints( points );
-    path.setIndex(new THREE.BufferAttribute(
-    new Uint16Array(indices), 1));
+function makePath(i, j) {
+    let position1 = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i])); 
+    let position2 = tileToPosition(Math.round(latitudes[j]), Math.round(longitudes[j]));
     
-    let pathMesh = new THREE.Mesh(
-        path,
-        new THREE.MeshStandardMaterial({
-            color: 0x000000,
-            envMap: envmap,
-            flatShading: true,
-            side: THREE.DoubleSide
-        })
-    )
+    var dx = position1.x - position2.x;
+    var dy = position1.y - position2.y;
+    var dz = Math.round(heights[i]/2) - Math.round(heights[j]/2);
 
-    scene.add(pathMesh);
+    let alpha = Math.atan2((latitudes[j] - latitudes[i]),(heights[j] - heights[i]));
+    let distance = Math.sqrt( dx * dx + dy * dy + dz * dz );
+    
+    const plane = new THREE.PlaneGeometry( 1, distance );
+    const material = new THREE.MeshBasicMaterial( {color: 0xcccff, side: THREE.DoubleSide} );
+    const linkElement = new THREE.Mesh( plane, material )
+    linkElement.rotateX(Math.PI * 0.5);
+    linkElement.rotateZ(alpha);
+    linkElement.position.setX((position1.x + position2.x)/2);
+    linkElement.position.setY((Math.round(heights[i]/2) + Math.round(heights[j]/2))/2);
+    linkElement.position.setZ((position1.y + position2.y)/2);
+    scene.add( linkElement );
+
+    // const plane2 = new THREE.PlaneGeometry( 1, 2 );
+    // const material2 = new THREE.MeshBasicMaterial( {color: 0xcccff, side: THREE.DoubleSide} );
+    // const linkElement2 = new THREE.Mesh( plane2, material2 );
+    // linkElement2.rotateX(Math.PI * 0.5);
+    // linkElement2.position.setX(position2.x);
+    // linkElement2.position.setY(Math.round(heights[j]/2)+1);
+    // linkElement2.position.setZ(position2.y);
+    // scene.add( linkElement2 );
+
+
+    // const points = [];
+    // points.push( new THREE.Vector3( position1.x + 0.5, Math.round(heights[i]/2), position1.y + 0.5) );
+    // points.push( new THREE.Vector3( position1.x - 0.5, Math.round(heights[i]/2), position1.y - 0.5) );
+    // points.push( new THREE.Vector3( position2.x - 0.5, Math.round(heights[j]/2), position2.y - 0.5) );
+    // points.push( new THREE.Vector3( position2.x + 0.5, Math.round(heights[j]/2), position2.y + 0.5) );
+    // const indices = [0, 1, 3, 1, 2, 3];
+    // const path = new THREE.BufferGeometry()
+    // .setFromPoints( points );
+    // path.setIndex(new THREE.BufferAttribute(
+    // new Uint16Array(indices), 1));
+    
+    // let pathMesh = new THREE.Mesh(
+    //     path,
+    //     new THREE.MeshStandardMaterial({
+    //         color: 0x4D0011,
+    //         envMap: envmap,
+    //         flatShading: true,
+    //         side: THREE.DoubleSide
+    //     })
+    // )
+
+    // scene.add(pathMesh);
 }
