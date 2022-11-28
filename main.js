@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import SimplexNoise from 'https://cdn.skypack.dev/simplex-noise@3.0.0';
+import RoadLine from './path';
+import { Vector2, Vector3 } from 'three';
 
 // Pallete used in project
 // Cool Gray
@@ -54,44 +55,12 @@ controls.target.set(0,0,0); //make sure that camera is looking at the origin of 
 controls.dampingFactor = 0.05; 
 controls.enableDamping = true; // these lines =^ smoothen out the movement of camera
 
-// function createCylinder(x,y,z) {
-//     const geometry = new THREE.CylinderGeometry(5, 5, y, 6, y);
-//     const material = new THREE.MeshStandardMaterial({color: 0xA21D00});
-//     const cylinder = new THREE.Mesh(geometry, material);
-//     cylinder.position.x = x;
-//     cylinder.position.y = y/2;
-//     cylinder.position.z = z;
-//     scene.add(cylinder);
-// }
-
-// createCylinder(5,6,8);
-// createCylinder(0,9,0);
-// createCylinder(-5,6,-8);
-// createCylinder(5,6,-8);
-// createCylinder(-5,6,8);
-// createCylinder(10,6,0);
-// createCylinder(-10,6,0);
-
 let envmap;
 
 (async function() {
     let pmrem = new THREE.PMREMGenerator(renderer);
     let envmapTexture = await new RGBELoader().setDataType(THREE.FloatType).loadAsync("assets/envmap.hdr");
     envmap = pmrem.fromEquirectangular(envmapTexture).texture;
-
-    const simplex = new SimplexNoise();
-
-    for(let i = -20; i <= 20; i++){ 
-        for(let j = -20; j <= 20; j++){ // ^= amount of Hexagones
-            let position = tileToPosition(i,j);
-            if(position.length() > 19) continue; //radius of the map
-
-            let noise = (simplex.noise2D(i * 0.1, j * 0.1) + 1) * 0.5;
-            noise = Math.pow(noise, 1.5);
-
-            makeHex(noise * 10, position);
-        }
-    }
 
     let hexagonMesh = new THREE.Mesh(
         hexagonGeometries,
@@ -104,15 +73,15 @@ let envmap;
     scene.add(hexagonMesh);         
         
     for(let i = 0; i < 17; i++){ 
-        let position = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i]));   
-        makeWarehouse(Math.round(heights[i]/2), position);
-        makeCircle(Math.round(heights[i]/2) + 0.01, position); // flicking bug solved in dummy way
+        let position = new Vector2(latitudes[i], longitudes[i]);   
+        makeWarehouse(heights[i]/2, position);
+        makeCircle(heights[i]/2 + 0.01, position); // flicking bug solved in dummy way
     }
 
     let warehouseMesh = new THREE.Mesh(
         warehouseGeometries,
         new THREE.MeshStandardMaterial({
-            color: 0xE4E5E8,
+            color: 0x000000,
             envMap: envmap,
             flatShading: true,
         })
@@ -140,10 +109,6 @@ let envmap;
     });
 })();
 
-function tileToPosition(tileX, tileY) {
-    return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535);
-}
-
 let hexagonGeometries = new THREE.BoxGeometry(0,0,0);
 
 function hexGeometry(height, position) {
@@ -153,27 +118,12 @@ function hexGeometry(height, position) {
     return geo;
 }
 
-function makeHex(height, position) {
-    let geo = hexGeometry(height, position);
-    hexagonGeometries = mergeBufferGeometries([hexagonGeometries, geo]);
-}
-
 let warehouseGeometries = new THREE.BoxGeometry(0,0,0);
 
 function makeWarehouse(height, position) {
     let geo = hexGeometry(height, position);
     warehouseGeometries = mergeBufferGeometries([warehouseGeometries, geo]);
 }
-
-// function makePlane(x,y,z) {
-//     const geometry = new THREE.PlaneGeometry(6, 6);
-//     const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-//     const plane = new THREE.Mesh( geometry, material );
-//     plane.position.setX(x);
-//     plane.position.setY(y);
-//     plane.position.setZ(z);
-//     scene.add(plane);
-// }
 
 let circleGeometries = new THREE.BoxGeometry(0,0,0);
 
@@ -190,72 +140,17 @@ function makeCircle(height, position) {
     circleGeometries = mergeBufferGeometries([circleGeometries, geo]);
 }
 
-// let linkElementGeometries = new THREE.BoxGeometry(0,0,0);
-
-// function linkElementGeometry(height, position) {
-//     let geo = new THREE.PlaneGeometry(1, 2);
-//     geo.rotateX(-Math.PI * 0.5);
-//     geo.translate(position.x, height, position.y);
-    
-//     return geo;
-// }
-
-// function makeLinkElement(height, position) {
-//     let geo = linkElementGeometry(height, position);
-//     linkElementGeometries = mergeBufferGeometries([linkElementGeometries, geo]);
-// }
-
 function makePath(i, j) {
-    let position1 = tileToPosition(Math.round(latitudes[i]), Math.round(longitudes[i])); 
-    let position2 = tileToPosition(Math.round(latitudes[j]), Math.round(longitudes[j]));
     
-    var dx = position1.x - position2.x;
-    var dy = position1.y - position2.y;
-    var dz = Math.round(heights[i]/2) - Math.round(heights[j]/2);
+    let position1 = new Vector3( latitudes[i], heights[i]/2, longitudes[i]);
+    let position2 = new Vector3( latitudes[j], heights[j]/2, longitudes[j]);
 
-    let alpha = Math.atan2((latitudes[j] - latitudes[i]),(heights[j] - heights[i]));
-    let distance = Math.sqrt( dx * dx + dy * dy + dz * dz );
-    
-    const plane = new THREE.PlaneGeometry( 1, distance );
-    const material = new THREE.MeshBasicMaterial( {color: 0xcccff, side: THREE.DoubleSide} );
-    const linkElement = new THREE.Mesh( plane, material )
-    linkElement.rotateX(Math.PI * 0.5);
-    linkElement.rotateZ(alpha);
-    linkElement.position.setX((position1.x + position2.x)/2);
-    linkElement.position.setY((Math.round(heights[i]/2) + Math.round(heights[j]/2))/2);
-    linkElement.position.setZ((position1.y + position2.y)/2);
-    scene.add( linkElement );
+    console.log(position1);
+    console.log(position2);
 
-    // const plane2 = new THREE.PlaneGeometry( 1, 2 );
-    // const material2 = new THREE.MeshBasicMaterial( {color: 0xcccff, side: THREE.DoubleSide} );
-    // const linkElement2 = new THREE.Mesh( plane2, material2 );
-    // linkElement2.rotateX(Math.PI * 0.5);
-    // linkElement2.position.setX(position2.x);
-    // linkElement2.position.setY(Math.round(heights[j]/2)+1);
-    // linkElement2.position.setZ(position2.y);
-    // scene.add( linkElement2 );
-
-
-    // const points = [];
-    // points.push( new THREE.Vector3( position1.x + 0.5, Math.round(heights[i]/2), position1.y + 0.5) );
-    // points.push( new THREE.Vector3( position1.x - 0.5, Math.round(heights[i]/2), position1.y - 0.5) );
-    // points.push( new THREE.Vector3( position2.x - 0.5, Math.round(heights[j]/2), position2.y - 0.5) );
-    // points.push( new THREE.Vector3( position2.x + 0.5, Math.round(heights[j]/2), position2.y + 0.5) );
-    // const indices = [0, 1, 3, 1, 2, 3];
-    // const path = new THREE.BufferGeometry()
-    // .setFromPoints( points );
-    // path.setIndex(new THREE.BufferAttribute(
-    // new Uint16Array(indices), 1));
-    
-    // let pathMesh = new THREE.Mesh(
-    //     path,
-    //     new THREE.MeshStandardMaterial({
-    //         color: 0x4D0011,
-    //         envMap: envmap,
-    //         flatShading: true,
-    //         side: THREE.DoubleSide
-    //     })
-    // )
-
-    // scene.add(pathMesh);
+    const path = new RoadLine({
+        begining: position1,
+        end: position2
+    });
+    scene.add(path);
 }
