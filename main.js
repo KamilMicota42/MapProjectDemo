@@ -100,7 +100,7 @@ let envmap;
     )
     scene.add(circleMesh);
     
-    makePath(10, 12);
+    makePath(15, 12);
 
 
     renderer.setAnimationLoop(() => {
