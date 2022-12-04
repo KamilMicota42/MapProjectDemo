@@ -99,7 +99,7 @@ let envmap;
     )
     scene.add(circleMesh);
     
-    makePath(10, 14);
+    makePath(8, 12);
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -204,11 +204,13 @@ function makePath(i, j) {
     let distanceSlope = distanceVector(new THREE.Vector3(startSlopeX, yi, startSlopeZ), new THREE.Vector3(endSlopeX, yj, endSlopeZ));
     let distanceSecLink = distanceVector(new THREE.Vector3(endSlopeX, yj, endSlopeZ), new THREE.Vector3(xj, yj, zj));
 
-    let p = 1; //radius of the circle
+    let p = 35;
     let hij=zj-zi;
-    let sij=Math.sqrt(Math.pow(p,2)+Math.pow(hij,2));
-
+    console.log('hij: ' + hij);
     let inclinacao = Math.atan(hij/p);
+    console.log('inclinacao: ' + inclinacao);
+    
+    let pij = Math.sqrt(Math.pow((xj - xi),2) + Math.pow((yj - yi),2)) - si - sj;
 
     //FIRST LINK ELEMENT
     const geometryFirstLinkEle = new THREE.PlaneGeometry(1, distanceFirstLink);
@@ -218,7 +220,9 @@ function makePath(i, j) {
     });
     const planeFirstLinkEle = new THREE.Mesh( geometryFirstLinkEle, materialFirstLinkEle );
     planeFirstLinkEle.position.set((xi + startSlopeX)/2, yi, (zi + startSlopeZ)/2);
-    
+
+    planeFirstLinkEle.rotateY(alpha);
+    planeFirstLinkEle.rotateX(Math.PI*0.5);
     
     
     scene.add( planeFirstLinkEle );
@@ -232,6 +236,10 @@ function makePath(i, j) {
     const planeSlope = new THREE.Mesh( geometrySlope, materialSlope );
     planeSlope.position.set((startSlopeX + endSlopeX)/2, (yi+yj)/2, (startSlopeZ + endSlopeZ)/2);
     
+    planeSlope.rotateY(alpha);
+    planeSlope.rotateX(Math.PI*0.5);
+    planeSlope.rotateX(pij);
+
     scene.add( planeSlope );
 
     //SECOND LINK ELEMENT
@@ -242,6 +250,9 @@ function makePath(i, j) {
     });
     const planeSecLinkEle = new THREE.Mesh( geometrySecLinkEle, materialSecLinkEle );
     planeSecLinkEle.position.set((xj + endSlopeX)/2, yj, (zj + endSlopeZ)/2);
+    
+    planeSecLinkEle.rotateY(alpha);
+    planeSecLinkEle.rotateX(Math.PI*0.5);
 
     scene.add( planeSecLinkEle );
 
