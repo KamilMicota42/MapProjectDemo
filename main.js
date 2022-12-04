@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Vector2, Vector3 } from 'three';
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
+
 
 // Pallete used in project
 // Cool Gray
@@ -74,6 +76,8 @@ let envmap;
     for(let i = 0; i < 17; i++){ 
         let position = new Vector2(latitudes[i], longitudes[i]);   
         makeWarehouse(heights[i]/2, position);
+        makeWarehouse1(heights[i]/2, position);
+        makeGround(heights[i]/2, position);
         makeCircle(heights[i]/2 + 0.01, position); // flicking bug solved in dummy way
     }
 
@@ -256,4 +260,25 @@ function makePath(i, j) {
 
     scene.add( planeSecLinkEle );
 
+}
+var objLoader = new OBJLoader();
+
+function makeWarehouse1(height, position){
+    objLoader.load('assets/house.obj', function(object) {
+        object.scale.set(0.2,0.2,0.2);
+        object.position.x = position.x;
+        object.position.z = position.y-1;
+        object.position.y = height;
+        scene.add(object);
+    });
+}
+function makeGround(height, position){
+    const geometry = new THREE.PlaneGeometry( 2, 3.5 );
+    const material = new THREE.MeshBasicMaterial( {color: 0x4D0011, side: THREE.DoubleSide} );
+    const plane = new THREE.Mesh( geometry, material );
+    plane.rotateX(Math.PI/2);
+    plane.position.x = position.x;
+    plane.position.z = position.y-1.7;
+    plane.position.y = height;
+    scene.add(plane);
 }
