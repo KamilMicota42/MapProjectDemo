@@ -3,6 +3,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Vector2, Vector3 } from 'three';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { VOXLoader } from 'three/examples/jsm/loaders/VOXLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 
 // Pallete used in project
 // Cool Gray
@@ -73,7 +77,8 @@ let envmap;
         
     for(let i = 0; i < 17; i++){ 
         let position = new Vector2(latitudes[i], longitudes[i]);   
-        makeWarehouse(heights[i]/2, position);
+        makeWarehouseHexagon(heights[i]/2, position);
+        makeWarehouse(heights[i]/2 + 0.02, position);
         makeCircle(heights[i]/2 + 0.01, position); // flicking bug solved in dummy way
     }
 
@@ -118,7 +123,7 @@ function hexGeometry(height, position) {
 
 let warehouseGeometries = new THREE.BoxGeometry(0,0,0);
 
-function makeWarehouse(height, position) {
+function makeWarehouseHexagon(height, position) {
     let geo = hexGeometry(height, position);
     warehouseGeometries = mergeBufferGeometries([warehouseGeometries, geo]);
 }
@@ -136,6 +141,17 @@ function circleGeometry(height, position) {
 function makeCircle(height, position) {
     let geo = circleGeometry(height, position);
     circleGeometries = mergeBufferGeometries([circleGeometries, geo]);
+}
+
+function makeWarehouse(height1, position1){
+    const glftLoader = new GLTFLoader();
+    glftLoader.load('./assets/scene.gltf', (glftScene) => {
+        glftScene.scene.scale.set(0.005,0.005,0.005);
+        glftScene.scene.position.x = position1.x;
+        glftScene.scene.position.z = position1.y;
+        glftScene.scene.position.y = height1;
+        scene.add(glftScene.scene)
+    })
 }
 
 function distanceVector( v1, v2 )
