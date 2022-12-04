@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-import RoadLine from './path';
 import { Vector2, Vector3 } from 'three';
 
 // Pallete used in project
@@ -100,8 +99,7 @@ let envmap;
     )
     scene.add(circleMesh);
     
-    makePath(15, 12);
-
+    makePath(10, 14);
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -140,6 +138,15 @@ function makeCircle(height, position) {
     circleGeometries = mergeBufferGeometries([circleGeometries, geo]);
 }
 
+function distanceVector( v1, v2 )
+{
+    var dx = v1.x - v2.x;
+    var dy = v1.y - v2.y;
+    var dz = v1.z - v2.z;
+
+    return Math.sqrt( dx * dx + dy * dy + dz * dz );
+}
+
 function makePath(i, j) {
     
     let position1 = new Vector3( latitudes[i], heights[i]/2, longitudes[i]);
@@ -148,9 +155,94 @@ function makePath(i, j) {
     console.log(position1);
     console.log(position2);
 
-    const path = new RoadLine({
-        begining: position1,
-        end: position2
+    let xi=position1.x, yi=position1.y, zi=position1.z;
+    let xj=position2.x, yj=position2.y, zj=position2.z;
+            
+    let ri=1.5;
+    let K_LIGACAO=1.5;
+    let rj=1.5;
+    let sj=K_LIGACAO*rj;
+
+    let si=K_LIGACAO*ri;
+    let alpha = Math.atan2((xj - xi),(zj - zi));//*180/Math.PI;
+
+    console.log(alpha);
+
+    let startSlopeX=xi+si*Math.sin(alpha);
+    let startSlopeZ=zi+si*Math.cos(alpha);
+            
+    let endSlopeX=xj-sj*Math.sin(alpha);
+    let endSlopeZ=zj-sj*Math.cos(alpha);
+
+    const points = []; 
+    points.push( new THREE.Vector3( xi, yi, zi) );
+    points.push( new THREE.Vector3( startSlopeX, yi, startSlopeZ) );
+    points.push( new THREE.Vector3( endSlopeX, yj, endSlopeZ) );
+    points.push( new THREE.Vector3( xj, yj, zj) );
+            
+    const geometryLine = new THREE.BufferGeometry().setFromPoints( points );
+    const materialLine = new THREE.LineBasicMaterial({
+        color: 0x0000ff
     });
-    scene.add(path);
+    const line = new THREE.Line( geometryLine, materialLine );
+    scene.add(line);
+
+    console.log('\nCenter:');
+    console.log('First linking part X: ' + (xi + startSlopeX)/2);
+    console.log('First linking part Y: ' + yi);
+    console.log('First linking part Z: ' + (zi + startSlopeZ)/2);
+
+    console.log('\nSecond linking part X: ' + (xj + endSlopeX)/2);
+    console.log('Second linking part Y: ' + yj);
+    console.log('Second linking part Z: ' + (zj + endSlopeZ)/2);
+
+    console.log('\nSlope X: ' + (startSlopeX + endSlopeX)/2);
+    console.log('Slope Y: ' + (yi + yj)/2);
+    console.log('Slope Z: ' + (startSlopeZ + endSlopeZ)/2);
+
+    let distanceFirstLink = distanceVector(new THREE.Vector3(xi, yi, zi), new THREE.Vector3(startSlopeX, yi, startSlopeZ));
+    let distanceSlope = distanceVector(new THREE.Vector3(startSlopeX, yi, startSlopeZ), new THREE.Vector3(endSlopeX, yj, endSlopeZ));
+    let distanceSecLink = distanceVector(new THREE.Vector3(endSlopeX, yj, endSlopeZ), new THREE.Vector3(xj, yj, zj));
+
+    let p = 1; //radius of the circle
+    let hij=zj-zi;
+    let sij=Math.sqrt(Math.pow(p,2)+Math.pow(hij,2));
+
+    let inclinacao = Math.atan(hij/p);
+
+    //FIRST LINK ELEMENT
+    const geometryFirstLinkEle = new THREE.PlaneGeometry(1, distanceFirstLink);
+    const materialFirstLinkEle = new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF, 
+        side: THREE.DoubleSide
+    });
+    const planeFirstLinkEle = new THREE.Mesh( geometryFirstLinkEle, materialFirstLinkEle );
+    planeFirstLinkEle.position.set((xi + startSlopeX)/2, yi, (zi + startSlopeZ)/2);
+    
+    
+    
+    scene.add( planeFirstLinkEle );
+
+    //SLOPE ELEMENT
+    const geometrySlope = new THREE.PlaneGeometry(1, distanceSlope);
+    const materialSlope = new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF, 
+        side: THREE.DoubleSide
+    });
+    const planeSlope = new THREE.Mesh( geometrySlope, materialSlope );
+    planeSlope.position.set((startSlopeX + endSlopeX)/2, (yi+yj)/2, (startSlopeZ + endSlopeZ)/2);
+    
+    scene.add( planeSlope );
+
+    //SECOND LINK ELEMENT
+    const geometrySecLinkEle = new THREE.PlaneGeometry(1, distanceSecLink);
+    const materialSecLinkEle = new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF, 
+        side: THREE.DoubleSide
+    });
+    const planeSecLinkEle = new THREE.Mesh( geometrySecLinkEle, materialSecLinkEle );
+    planeSecLinkEle.position.set((xj + endSlopeX)/2, yj, (zj + endSlopeZ)/2);
+
+    scene.add( planeSecLinkEle );
+
 }
