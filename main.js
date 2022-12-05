@@ -105,9 +105,13 @@ let envmap;
     scene.add(circleMesh);
     
     makePath(8, 12);
-    makePath(7, 9);
     makePath(10, 12);
     makePath(1, 0);
+
+    makePath(7, 8);
+    makePath(2, 14);
+
+    makePath(4, 11);
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -164,6 +168,14 @@ function distanceVector( v1, v2 )
     var dz = v1.z - v2.z;
 
     return Math.sqrt( dx * dx + dy * dy + dz * dz );
+}
+
+function distanceVectorXZ( v1, v2 )
+{
+    var dx = v1.x - v2.x;
+    var dz = v1.z - v2.z;
+
+    return Math.sqrt( dx * dx + dz * dz );
 }
 
 function makePath(i, j) {
@@ -223,12 +235,9 @@ function makePath(i, j) {
     let distanceSlope = distanceVector(new THREE.Vector3(startSlopeX, yi, startSlopeZ), new THREE.Vector3(endSlopeX, yj, endSlopeZ));
     let distanceSecLink = distanceVector(new THREE.Vector3(endSlopeX, yj, endSlopeZ), new THREE.Vector3(xj, yj, zj));
 
-    let p = distanceVector(new Vector3(startSlopeX, yi, startSlopeZ), new Vector3(endSlopeX, yj, endSlopeZ));
-    console.log(p);
+    let p = distanceVectorXZ(new THREE.Vector3(startSlopeX, yi, startSlopeZ), new THREE.Vector3(endSlopeX, yj, endSlopeZ));
     let hij = yi - yj;
-    console.log('hij: ' + hij);
     let inclinacao = Math.atan2(p,hij);
-    console.log('inclinacao: ' + inclinacao);
     
     // let pij = Math.sqrt(Math.pow((xj - xi),2) + Math.pow((yj - yi),2)) - si - sj;
 
