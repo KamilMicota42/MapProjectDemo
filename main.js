@@ -105,6 +105,9 @@ let envmap;
     scene.add(circleMesh);
     
     makePath(8, 12);
+    makePath(7, 9);
+    makePath(10, 12);
+    makePath(1, 0);
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -220,13 +223,14 @@ function makePath(i, j) {
     let distanceSlope = distanceVector(new THREE.Vector3(startSlopeX, yi, startSlopeZ), new THREE.Vector3(endSlopeX, yj, endSlopeZ));
     let distanceSecLink = distanceVector(new THREE.Vector3(endSlopeX, yj, endSlopeZ), new THREE.Vector3(xj, yj, zj));
 
-    let p = 35;
-    let hij=zj-zi;
+    let p = distanceVector(new Vector3(startSlopeX, yi, startSlopeZ), new Vector3(endSlopeX, yj, endSlopeZ));
+    console.log(p);
+    let hij = yi - yj;
     console.log('hij: ' + hij);
-    let inclinacao = Math.atan(hij/p);
+    let inclinacao = Math.atan2(p,hij);
     console.log('inclinacao: ' + inclinacao);
     
-    let pij = Math.sqrt(Math.pow((xj - xi),2) + Math.pow((yj - yi),2)) - si - sj;
+    // let pij = Math.sqrt(Math.pow((xj - xi),2) + Math.pow((yj - yi),2)) - si - sj;
 
     //FIRST LINK ELEMENT
     const geometryFirstLinkEle = new THREE.PlaneGeometry(1, distanceFirstLink);
@@ -253,8 +257,7 @@ function makePath(i, j) {
     planeSlope.position.set((startSlopeX + endSlopeX)/2, (yi+yj)/2, (startSlopeZ + endSlopeZ)/2);
     
     planeSlope.rotateY(alpha);
-    planeSlope.rotateX(Math.PI*0.5);
-    planeSlope.rotateX(pij);
+    planeSlope.rotateX(-inclinacao);
 
     scene.add( planeSlope );
 
@@ -271,5 +274,4 @@ function makePath(i, j) {
     planeSecLinkEle.rotateX(Math.PI*0.5);
 
     scene.add( planeSecLinkEle );
-
 }
