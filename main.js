@@ -24,9 +24,12 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
 const names = ["Arouca", "Espinho", "Gondomar", "Maia", "Matosinhos", "Oliveira de Azeméis", "Paredes", "Porto", "Póvoa de Varzim", "Santa Maria da Feira", "Santo Tirso", "São João da Madeira", "Trofa", "Vale de Cambra", "Valongo", "Vila do Conde", "Vila Nova de Gaia"];
-const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.4754, 24.3898, 49.9225, 8.7369, -5.6955, -2.4215, 11.0035, -20.8446, -0.9492, 47.4041, 21.0384];
+const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.4754, 24.3898, 49.9225, 8.7369, -5.6955, -2.4215, 11.0035, -20.8446, -0.9492, 47.4041, 23.0384];
 const latitudes = [-42.6618, -36.7615, 50.0000, -19.4217, -22.8394, -50.0000, -21.2052, -24.9214, -7.4403, -43.0783, -10.3708, -45.1446, -10.6851, -49.6622, -22.5016, -9.6952, -27.5927];
 const heights = [15.6250, 34.3750, 12.5000, 43.7500, 21.8750, 46.8750, 0.0000, 37.5000, 25.0000, 6.2500, 40.6250, 18.7500, 28.1250, 3.1250, 50.0000, 9.3750, 31.2500];
+
+
+
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -79,7 +82,7 @@ let envmap;
         let position = new Vector2(latitudes[i], longitudes[i]);   
         makeWarehouseHexagon(heights[i]/2, position);
         makeWarehouse(heights[i]/2 + 0.02, position);
-        makeCircle(heights[i]/2 + 0.01, position); // flicking bug solved in dummy way
+        makeCircle(heights[i]/2 + 0.01, position); // bug solved in dummy way
     }
 
     let warehouseMesh = new THREE.Mesh(
@@ -92,26 +95,36 @@ let envmap;
     )
     scene.add(warehouseMesh);
 
+    const roundaboutTexture = new THREE.TextureLoader().load( 'assets/roundaboutText.jpg' );
     let circleMesh = new THREE.Mesh(
         circleGeometries,
         new THREE.MeshStandardMaterial({
-            color: 0x4D0011,
+            color: 0x4B443C,
             envMap: envmap,
             flatShading: true,
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
+            map: roundaboutTexture
         })
         
     )
     scene.add(circleMesh);
     
-    makePath(8, 12);
+    makePath(10, 14);
     makePath(10, 12);
-    makePath(1, 0);
-
-    makePath(7, 8);
-    makePath(2, 14);
-
-    makePath(4, 11);
+    makePath(12, 6);
+    makePath(12, 2);
+    makePath(12, 11);
+    makePath(0, 13);
+    makePath(13, 11);
+    makePath(11, 9);
+    makePath(9, 4);
+    makePath(4, 8);
+    makePath(14, 1);
+    makePath(14, 5);
+    makePath(6, 15);
+    makePath(5, 16);
+    makePath(14, 3);
+    makePath(7, 1);
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -153,7 +166,7 @@ function makeCircle(height, position) {
 function makeWarehouse(height1, position1){
     const glftLoader = new GLTFLoader();
     glftLoader.load('./assets/scene.gltf', (glftScene) => {
-        glftScene.scene.scale.set(0.005,0.005,0.005);
+        glftScene.scene.scale.set(0.3,0.3,0.3);
         glftScene.scene.position.x = position1.x;
         glftScene.scene.position.z = position1.y;
         glftScene.scene.position.y = height1;
@@ -213,7 +226,7 @@ function makePath(i, j) {
             
     const geometryLine = new THREE.BufferGeometry().setFromPoints( points );
     const materialLine = new THREE.LineBasicMaterial({
-        color: 0x0000ff
+        color: 0x4D0011
     });
     const line = new THREE.Line( geometryLine, materialLine );
     scene.add(line);
@@ -241,11 +254,14 @@ function makePath(i, j) {
     
     // let pij = Math.sqrt(Math.pow((xj - xi),2) + Math.pow((yj - yi),2)) - si - sj;
 
+    const roadTexture = new THREE.TextureLoader().load( 'assets/roadText.jpg' );
+
     //FIRST LINK ELEMENT
     const geometryFirstLinkEle = new THREE.PlaneGeometry(1, distanceFirstLink);
     const materialFirstLinkEle = new THREE.MeshBasicMaterial({
-        color: 0xFFFFFF, 
-        side: THREE.DoubleSide
+        color: 0x53565a, 
+        side: THREE.DoubleSide,
+        map: roadTexture
     });
     const planeFirstLinkEle = new THREE.Mesh( geometryFirstLinkEle, materialFirstLinkEle );
     planeFirstLinkEle.position.set((xi + startSlopeX)/2, yi, (zi + startSlopeZ)/2);
@@ -259,8 +275,9 @@ function makePath(i, j) {
     //SLOPE ELEMENT
     const geometrySlope = new THREE.PlaneGeometry(1, distanceSlope);
     const materialSlope = new THREE.MeshBasicMaterial({
-        color: 0xFFFFFF, 
-        side: THREE.DoubleSide
+        color: 0x53565a, 
+        side: THREE.DoubleSide,
+        map: roadTexture
     });
     const planeSlope = new THREE.Mesh( geometrySlope, materialSlope );
     planeSlope.position.set((startSlopeX + endSlopeX)/2, (yi+yj)/2, (startSlopeZ + endSlopeZ)/2);
@@ -273,8 +290,9 @@ function makePath(i, j) {
     //SECOND LINK ELEMENT
     const geometrySecLinkEle = new THREE.PlaneGeometry(1, distanceSecLink);
     const materialSecLinkEle = new THREE.MeshBasicMaterial({
-        color: 0xFFFFFF, 
-        side: THREE.DoubleSide
+        color: 0x53565a, 
+        side: THREE.DoubleSide,
+        map: roadTexture
     });
     const planeSecLinkEle = new THREE.Mesh( geometrySecLinkEle, materialSecLinkEle );
     planeSecLinkEle.position.set((xj + endSlopeX)/2, yj, (zj + endSlopeZ)/2);
