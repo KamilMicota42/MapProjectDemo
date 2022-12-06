@@ -13,5 +13,11 @@
 
 ## BASIC THREEJS SETTINGS:
 <p align="center">
+    <b>Custom usage of renderer.toneMapping and renderer.ouputEncoding, in order to make sure that it's possible to display render properly in current device.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205873857-fb608e45-a39c-49db-8cc8-8baf44b4c521.png"/>
+</p>
+
+## BASIC THREEJS SETTINGS:
+<p align="center">
     <img src="https://user-images.githubusercontent.com/85360923/205873857-fb608e45-a39c-49db-8cc8-8baf44b4c521.png"/>
 </p>
