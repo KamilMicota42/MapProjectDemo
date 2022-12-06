@@ -34,13 +34,14 @@
     <img src="https://user-images.githubusercontent.com/85360923/205877219-48b07181-63bd-4b94-831d-7b6f5aa533a5.png"/>
 </p>
 
-## FUNCTIONS RELATED TO CREATING GEOMETRY OBJECTS:
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/85360923/205877219-48b07181-63bd-4b94-831d-7b6f5aa533a5.png"/>
-</p>
+## FUNCTIONS AND MESHES RELATED TO BASIC GEOMETRY OBJECTS:
 <p align="center">
     <img src="https://user-images.githubusercontent.com/85360923/205956570-40dfea57-2fa8-48b6-837f-a1125148de54.png"/>
 </p>
 <p align="center">
     <img src="https://user-images.githubusercontent.com/85360923/205957056-0990efb6-68e3-4891-b4c3-ed8142797a58.png"/>
 </p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/205957514-d9c1e6ac-4a77-406e-86c6-78b1fbae340b.png"/>
+</p>
+
