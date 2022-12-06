@@ -33,12 +33,5 @@
     <b>In this sprint we use static number (17) to create right amount of the warehouses</b>
     <img src="https://user-images.githubusercontent.com/85360923/205877219-48b07181-63bd-4b94-831d-7b6f5aa533a5.png"/>
     <b>Definition of the function and all related to it functions and meshes.</b>
-    <b>_makeWarehouseHexagon_</b>
-    <img src="https://user-images.githubusercontent.com/85360923/205879990-84422b83-901e-48cb-ac7f-e9459ffe2a74.png"/>
-    
-    <b>_makeWarehouse_</b>
-    
-    <b>_makeCircle_</b>
-
 </p>
 
