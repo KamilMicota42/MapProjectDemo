@@ -7,3 +7,7 @@
 </p>
 
 ## HARDCODED DATABASE (FOR SPRINT A)
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/205871617-7250f031-b914-4de9-a290-e1aea2e2e13d.png" />
+</p>
