@@ -21,3 +21,9 @@
 <p align="center">
     <img src="https://user-images.githubusercontent.com/85360923/205874769-838e8f18-b04c-41b8-816e-fb1ca5c35074.png"/>
 </p>
+
+## SETTING THE CAMERA CONTROLS:
+<p align="center">
+    <b>Except setting basic settings those lines makes sure that camera will orbit around the middle of the scene that is (0,0,0) point. Also controls.dampingFactor and controls.enableDamping smoothen out the movement of camera. Task of commented line is to show usage of panning (in this case around the most busy warehouse no. 12).</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205875346-4d062db3-c59b-4cf0-9303-5877c35fde4a.png"/>
+</p>
