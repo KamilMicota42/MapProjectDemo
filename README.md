@@ -31,7 +31,7 @@
 ## CREATING THE OBJECTS:
 <p align="center">
     <b>In this sprint we use static number (17) to create right amount of the warehouses. Also the height is divide by two for the readability of visualization. The magic numbers such as 0.02, 0.01... are added to solve the blinking problem in obvious and easy way.</b>
-    <img src="https://user-images.githubusercontent.com/85360923/205877219-48b07181-63bd-4b94-831d-7b6f5aa533a5.png"/>
+    <img src="https://user-images.githubusercontent.com/85360923/205962749-628ca3ca-def4-4088-b606-5e3b2e04f7e9.png"/>
 </p>
 
 ## FUNCTIONS AND MESHES RELATED TO BASIC GEOMETRY OBJECTS:
@@ -45,8 +45,14 @@
     <img src="https://user-images.githubusercontent.com/85360923/205957514-d9c1e6ac-4a77-406e-86c6-78b1fbae340b.png"/>
 </p>
 
-## ADDING TEXTURE TO CIRCLE UNDER WAREHOUSE:
+## CIRCLE MESH / ADDING TEXTURE TO CIRCLE UNDER WAREHOUSE:
 <p align="center">
-    <b>Uploading texture from assets file. (Texture was created via gimp, so there's no license file).</b>
+    <b>Uploading texture from assets file. (Texture was created via gimp, so there's no license file). Color is additional in this case, it was added to fit better with palette of whole project.</b>
     <img src="https://user-images.githubusercontent.com/85360923/205959295-f9b6c1cc-9ad3-40f4-a31a-358abd6c68c1.png"/>
+</p>
+
+## WAREHOUSES MODELS:
+<p align="center">
+    <b>Using GLTF loader to generate model. The model was took from www.sketchfab.com and license and all the credits about the author are in license.txt file.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205963605-d7ea8c2d-33d5-40ae-88b4-cea87cbe2b26.png"/>
 </p>
