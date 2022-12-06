@@ -64,5 +64,11 @@
     <img src="https://user-images.githubusercontent.com/85360923/205967389-86d7da61-5753-4113-8f2a-a9a695a74e4e.png"/>
 </p>
 
+## CREATING PATHS:
+<p align="center">
+    <b>For the sake of this documentation creation of path can be seperated to lineGeometry and planeGeometry parts.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205967389-86d7da61-5753-4113-8f2a-a9a695a74e4e.png"/>
+</p>
+
 
 
