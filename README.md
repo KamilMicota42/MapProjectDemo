@@ -57,3 +57,12 @@
     <b>Using GLTF loader to generate model. The model was took from www.sketchfab.com and license and all the credits about the author are in license.txt file.</b>
     <img src="https://user-images.githubusercontent.com/85360923/205963605-d7ea8c2d-33d5-40ae-88b4-cea87cbe2b26.png"/>
 </p>
+
+## CREATING PATHS:
+<p align="center">
+    <b>For the sake of this documentation creation of path can be seperated to lineGeometry and planeGeometry parts.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205967389-86d7da61-5753-4113-8f2a-a9a695a74e4e.png"/>
+</p>
+
+
+
