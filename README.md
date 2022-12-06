@@ -17,7 +17,7 @@
     <img src="https://user-images.githubusercontent.com/85360923/205873857-fb608e45-a39c-49db-8cc8-8baf44b4c521.png"/>
 </p>
 
-## BASIC THREEJS SETTINGS:
+## ADDING POINT AND ABSOLUTE LIGHTING TO THE SCENE:
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/85360923/205873857-fb608e45-a39c-49db-8cc8-8baf44b4c521.png"/>
+    <img src="https://user-images.githubusercontent.com/85360923/205874769-838e8f18-b04c-41b8-816e-fb1ca5c35074.png"/>
 </p>
