@@ -13,5 +13,5 @@
 
 ## BASIC THREEJS SETTINGS:
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/85360923/205873575-d7719bcc-4672-4d67-b63f-9db473379b75.png" />
+    <img src="https://user-images.githubusercontent.com/85360923/205873857-fb608e45-a39c-49db-8cc8-8baf44b4c521.png"/>
 </p>
