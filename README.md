@@ -27,3 +27,18 @@
     <b>Except setting basic settings those lines makes sure that camera will orbit around the middle of the scene that is (0,0,0) point. Also controls.dampingFactor and controls.enableDamping smoothen out the movement of camera. Task of commented line is to show usage of panning (in this case around the most busy warehouse no. 12).</b>
     <img src="https://user-images.githubusercontent.com/85360923/205875346-4d062db3-c59b-4cf0-9303-5877c35fde4a.png"/>
 </p>
+
+## CREATE THE OBJECTS:
+<p align="center">
+    <b>In this sprint we use static number (17) to create right amount of the warehouses</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205877219-48b07181-63bd-4b94-831d-7b6f5aa533a5.png"/>
+    <b>Definition of the function and all related to it functions and meshes.</b>
+    <b>_makeWarehouseHexagon_</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205879990-84422b83-901e-48cb-ac7f-e9459ffe2a74.png"/>
+    
+    <b>_makeWarehouse_</b>
+    
+    <b>_makeCircle_</b>
+
+</p>
+
