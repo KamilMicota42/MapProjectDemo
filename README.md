@@ -17,8 +17,9 @@
     <img src="https://user-images.githubusercontent.com/85360923/205873857-fb608e45-a39c-49db-8cc8-8baf44b4c521.png"/>
 </p>
 
-## ADDING POINT AND ABSOLUTE LIGHTING TO THE SCENE:
+## ADDING ABSOLUTE AND POINT LIGHTING TO THE SCENE:
 <p align="center">
+    <b>Demand for both those lighting methodes comes from the fact that, without the absolute lighting the objects in the scene will just be too dark, and we need a point lighting to show the depth of the objects.</b>
     <img src="https://user-images.githubusercontent.com/85360923/205874769-838e8f18-b04c-41b8-816e-fb1ca5c35074.png"/>
 </p>
 
