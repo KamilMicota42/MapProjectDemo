@@ -45,3 +45,8 @@
     <img src="https://user-images.githubusercontent.com/85360923/205957514-d9c1e6ac-4a77-406e-86c6-78b1fbae340b.png"/>
 </p>
 
+## ADDING TEXTURE TO CIRCLE UNDER WAREHOUSE:
+<p align="center">
+    <b>Uploading texture from assets file. (Texture was created via gimp, so there's no license file).</b>
+    <img src="https://user-images.githubusercontent.com/85360923/205959295-f9b6c1cc-9ad3-40f4-a31a-358abd6c68c1.png"/>
+</p>
