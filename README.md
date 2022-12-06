@@ -1,7 +1,4 @@
-
-<p align="center">
-    # SGRAI_PROJECT
-</p>
+# SGRAI_PROJECT
 
 ## USE CASE
 
