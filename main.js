@@ -60,7 +60,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,0,0); //make sure that camera is looking at the origin of the scene
 controls.dampingFactor = 0.05; 
 controls.enableDamping = true; // these lines =^ smoothen out the movement of camera
-
+// controls.target.set(latitudes[12],heights[12]/2,longitudes[12]); //panning to first warehoues
 let envmap;
 
 (async function() {
