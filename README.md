@@ -30,7 +30,11 @@
 
 ## CREATE THE OBJECTS:
 <p align="center">
-    <b>In this sprint we use static number (17) to create right amount of the warehouses</b>
+    <b>In this sprint we use static number (17) to create right amount of the warehouses. Also the height is divide by two for the readability of visualization. The magic numbers such as 0.02, 0.01... are added to solve the blinking problem in obvious and easy way.</b>
+    
     <img src="https://user-images.githubusercontent.com/85360923/205877219-48b07181-63bd-4b94-831d-7b6f5aa533a5.png"/>
+
+    <b>In this sprint we use static number (17) to create right amount of the warehouses</b>
+
 </p>
 
