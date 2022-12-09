@@ -46,6 +46,10 @@
     <img src="https://user-images.githubusercontent.com/85360923/205957514-d9c1e6ac-4a77-406e-86c6-78b1fbae340b.png"/>
 </p>
 
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/206792432-dfee8409-41ed-44a7-add5-fb1581b66db5.png"/>
+</p>
+
 ## Circle Mesh / Adding Texture To Circle Under Warehouse:
 <p align="center">
     <b>Uploading texture from assets file. (Texture was created via gimp, so there's no license file). Color is additional in this case, it was added to fit better with palette of whole project.</b>
