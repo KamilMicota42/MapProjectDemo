@@ -111,6 +111,12 @@
     <img src="https://user-images.githubusercontent.com/85360923/206745159-2107cc87-75a3-42ba-b4e7-3f4c0828d0c3.png"/>
 </p>
 
+## Help Path:
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/206793646-19ba5519-9911-4ee4-bc87-f785ea60f8d6.png"/>
+</p>
+
+
 ## Creating Proper Path (Plane Geometry):
 <p align="center">
     <b>To calculate the length or the rotations of linking elements and slope we are gonna use this functions.</b>
@@ -140,5 +146,10 @@
 <p align="center">
     <b>Second link element:</b>
     <img src="https://user-images.githubusercontent.com/85360923/206791945-ffbcc3e4-f67f-4ccb-aa4b-9b73ceff442f.png"/>
+</p>
+
+## Proper Path:
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/206793895-bfafa702-a989-4764-8b06-930e18e745dc.png"/>
 </p>
 
