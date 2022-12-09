@@ -55,6 +55,9 @@
 ## Warehouses Models:
 <p align="center">
     <b>Using GLTF loader to generate model. The model was took from www.sketchfab.com and license and all the credits about the author are in license.txt file.</b>
+</p>
+
+<p align="center">
     <img src="https://user-images.githubusercontent.com/85360923/205963605-d7ea8c2d-33d5-40ae-88b4-cea87cbe2b26.png"/>
 </p>
 
