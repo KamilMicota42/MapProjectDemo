@@ -77,7 +77,11 @@
     <b>What I was supposed to do was set up axis like: y as width, z as height, x as depth. Changing this setting would make whole project a lot easier because I could use the solutions from Web (Next part of this documentation is largely about math which was used to set up the path in between warehouses, that's the reason I'm adding this important information right now). The issue should be solved by changing the axis and then values to proper before working on the Sprint B part.</b>
 </p>
 
-## Creating Help Line (Line Geometry):
+<p align="center">
+    <b>Also before starting Sprint B there's need to use THREE.Vector3 everywhere, because in some cases in this project I used THREE.Vector2 + height value which is not uncorrect but thre readability is worse.</b>
+</p>
+
+## Creating Help Path (Line Geometry):
 <p align="center">
     <b>I started the work on paths by creating the "help line" which would be THREE.BufferGeometry().setFromPoints(). Firstly I needed two more points, I had to calculate where the "slope" of the path will start and where it will end. For this purpose I calculated the values: 'si' (which is be the length of the link elemenet) and 'alpha' (which is direction of the link element).</b>
     <img src="https://user-images.githubusercontent.com/85360923/206741188-e7e26c35-e70f-433e-a614-d20b47ead413.png"/>
@@ -87,4 +91,10 @@
 <p align="center">
     <b>After creating those points I added them to "points" array, in this order: first warehouse, start slope, end slope, second warehouse. After that I added the material and the geometry to mesh and then added it to the scene.</b>
     <img src="https://user-images.githubusercontent.com/85360923/206745159-2107cc87-75a3-42ba-b4e7-3f4c0828d0c3.png"/>
+</p>
+
+## Creating Proper Path (Plane Geometry):
+<p align="center">
+    <b>I started the work on paths by creating the "help line" which would be THREE.BufferGeometry().setFromPoints(). Firstly I needed two more points, I had to calculate where the "slope" of the path will start and where it will end. For this purpose I calculated the values: 'si' (which is be the length of the link elemenet) and 'alpha' (which is direction of the link element).</b>
+    <img src="https://user-images.githubusercontent.com/85360923/206741188-e7e26c35-e70f-433e-a614-d20b47ead413.png"/>
 </p>
