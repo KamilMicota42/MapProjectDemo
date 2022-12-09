@@ -64,10 +64,14 @@
     <img src="https://user-images.githubusercontent.com/85360923/205967389-86d7da61-5753-4113-8f2a-a9a695a74e4e.png"/>
 </p>
 
-## CREATING PATHS:
+## LITTLE ISSUE:
 <p align="center">
-    <b>For the sake of this documentation creation of path can be seperated to lineGeometry and planeGeometry parts.</b>
-    <img src="https://user-images.githubusercontent.com/85360923/205967389-86d7da61-5753-4113-8f2a-a9a695a74e4e.png"/>
+    <b>As this project is my first more complex project with 3D visualization I wasn't aware of the basic settings of the axis. In used:
+x - width
+y - hieght
+z - depth
+Like this:</b>
+    <img src="https://user-images.githubusercontent.com/85360923/206737932-aec2c5c1-98e8-4d80-a1f9-a442fa57fb8b.png"/>
 </p>
 
 
