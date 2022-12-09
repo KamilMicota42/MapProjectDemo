@@ -46,10 +46,6 @@
     <img src="https://user-images.githubusercontent.com/85360923/205957514-d9c1e6ac-4a77-406e-86c6-78b1fbae340b.png"/>
 </p>
 
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/85360923/206792432-dfee8409-41ed-44a7-add5-fb1581b66db5.png"/>
-</p>
-
 ## Circle Mesh / Adding Texture To Circle Under Warehouse:
 <p align="center">
     <b>Uploading texture from assets file. (Texture was created via gimp, so there's no license file). Color is additional in this case, it was added to fit better with palette of whole project.</b>
@@ -63,6 +59,21 @@
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/85360923/205963605-d7ea8c2d-33d5-40ae-88b4-cea87cbe2b26.png"/>
+</p>
+
+## Hexagones:
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/206792432-dfee8409-41ed-44a7-add5-fb1581b66db5.png"/>
+</p>
+
+## Circles:
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/206792763-87d0bd84-c5b9-4ef2-9e68-3368c7a14dd6.png"/>
+</p>
+
+## Warehouses Models:
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/85360923/206792981-cc03590e-bd73-48d1-b4e0-fa18c7f03e64.png"/>
 </p>
 
 ## Creating Paths:
