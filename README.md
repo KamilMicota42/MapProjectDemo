@@ -111,3 +111,19 @@
     <b>I will use one texture for all the elements of the road, because of it  the slope element will be a little bit stretched out.</b>
     <img src="https://user-images.githubusercontent.com/85360923/206790640-db481054-f7a9-40b9-b743-69c88c4b09d7.png"/>
 </p>
+
+<p align="center">
+    <b>First link element.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/206791495-8eb78344-e8b8-4387-a41f-bb8868b31c34.png"/>
+</p>
+
+<p align="center">
+    <b>Slope element.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/206791781-80b479d2-bf4e-4a46-a477-7db3e2d2a9d7.png"/>
+</p>
+
+<p align="center">
+    <b>Second link element.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/206791945-ffbcc3e4-f67f-4ccb-aa4b-9b73ceff442f.png"/>
+</p>
+
