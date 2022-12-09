@@ -95,11 +95,6 @@
 
 ## Creating Proper Path (Plane Geometry):
 <p align="center">
-    <b>I started the work on paths by creating the "help line" which would be THREE.BufferGeometry().setFromPoints(). Firstly I needed two more points, I had to calculate where the "slope" of the path will start and where it will end. For this purpose I calculated the values: 'si' (which is be the length of the link elemenet) and 'alpha' (which is direction of the link element).</b>
-    <img src="https://user-images.githubusercontent.com/85360923/206741188-e7e26c35-e70f-433e-a614-d20b47ead413.png"/>
-</p>
-
-<p align="center">
     <b>To calculate the length or the rotations of linking elements and slope we are gonna use this functions.</b>
     <img src="https://user-images.githubusercontent.com/85360923/206789894-64cd978d-2b35-4a69-8572-1944f57304ad.png"/>
 </p>
@@ -107,4 +102,9 @@
 <p align="center">
     <b>To calculate the length or the rotations of linking elements and slope we are gonna use this functions.</b>
     <img src="https://user-images.githubusercontent.com/85360923/206790082-0434b604-fbe7-46c7-9ca8-b9d93d19145a.png"/>
+</p>
+
+<p align="center">
+    <b>I will use one texture for all the elements of the road, because of it  the slope element will be a little bit stretched out.</b>
+    <img src="https://user-images.githubusercontent.com/85360923/206790640-db481054-f7a9-40b9-b743-69c88c4b09d7.png"/>
 </p>
