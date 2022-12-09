@@ -66,13 +66,6 @@
 
 ## LITTLE ISSUE:
 <p align="center">
-    <b>As this project is my first more complex project with 3D visualization I wasn't aware of the basic settings of the axis. In used:
-x - width
-y - hieght
-z - depth
-Like this:</b>
+    <b>As this project is my first more complex project with 3D visualization I wasn't aware of the basic settings of the axis (I thought that rules for the axis are the same as in 2d visualization + depth). I used: x as width, y as height, z as depth. Like this:</b>
     <img src="https://user-images.githubusercontent.com/85360923/206737932-aec2c5c1-98e8-4d80-a1f9-a442fa57fb8b.png"/>
 </p>
-
-
-
