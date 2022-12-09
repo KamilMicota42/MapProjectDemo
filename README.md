@@ -153,5 +153,4 @@
     <img src="https://user-images.githubusercontent.com/85360923/206793895-bfafa702-a989-4764-8b06-930e18e745dc.png"/>
 </p>
 
-## Design and Code by Micota Kamil
 
