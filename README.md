@@ -71,7 +71,7 @@
 </p>
 
 <p align="center">
-    <b>What I was supposed to do was set up axis like: y as width, z as height, x as depth. Changing this setting would make whole project a lot easier because I could use the solutions from Web (Next part of this documentation is largely about math which was used to set up the path in between warehouses, that's the reason I'm adding this important information right now). The issue should be solved by changing the axis and then values to proper before working on the Sprint B part.\n</b>
+    <b>What I was supposed to do was set up axis like: y as width, z as height, x as depth. Changing this setting would make whole project a lot easier because I could use the solutions from Web (Next part of this documentation is largely about math which was used to set up the path in between warehouses, that's the reason I'm adding this important information right now). The issue should be solved by changing the axis and then values to proper before working on the Sprint B part.</b>
 </p>
 
 ## Creating Help Line:
