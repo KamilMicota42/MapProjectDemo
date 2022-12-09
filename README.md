@@ -71,6 +71,5 @@
 </p>
 
 <p align="center">
-    <b>What I was supposed to do was set up axis like: y as width, z as height, x as depth. Like this:</b>
-    <img src="https://user-images.githubusercontent.com/85360923/206739296-5899d3f6-781e-4b1b-acc5-d4e4ff686933.png"/>
+    <b>What I was supposed to do was set up axis like: y as width, z as height, x as depth. Changing this setting would make whole project a lot easier because I could use the soultions from Web (Next part of this documentation is largely about math which was used to set up the path in between warehouses, that's the reason I'm adding this important information right now). The issue should be solved by changing the axis and then values to proper before working on the Sprint B part.</b>
 </p>
