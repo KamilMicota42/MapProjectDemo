@@ -48,6 +48,7 @@ document.body.appendChild(renderer.domElement);
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(25,25,25);
 const ambientLight = new THREE.AmbientLight(0xffffff);
+//^^^ increase the realism of the graphic representation, through adequate lighting
 
 scene.add(pointLight, ambientLight);
 
