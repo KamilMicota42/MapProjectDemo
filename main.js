@@ -27,6 +27,7 @@ const names = ["Arouca", "Espinho", "Gondomar", "Maia", "Matosinhos", "Oliveira 
 const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.4754, 24.3898, 49.9225, 8.7369, -5.6955, -2.4215, 11.0035, -20.8446, -0.9492, 47.4041, 23.0384];
 const latitudes = [-42.6618, -36.7615, 50.0000, -19.4217, -22.8394, -50.0000, -21.2052, -24.9214, -7.4403, -43.0783, -10.3708, -45.1446, -10.6851, -49.6622, -22.5016, -9.6952, -27.5927];
 const heights = [15.6250, 34.3750, 12.5000, 43.7500, 21.8750, 46.8750, 0.0000, 37.5000, 25.0000, 6.2500, 40.6250, 18.7500, 28.1250, 3.1250, 50.0000, 9.3750, 31.2500];
+const rotations = [(Math.PI*2/17) * 1, (Math.PI*2/17) * 2, (Math.PI*2/17) * 3, (Math.PI*2/17) * 4, (Math.PI*2/17) * 5, (Math.PI*2/17) * 6, (Math.PI*2/17) * 7, (Math.PI*2/17) * 8, (Math.PI*2/17) * 9, (Math.PI*2/17) * 10, (Math.PI*2/17) * 11, (Math.PI*2/17) * 12, (Math.PI*2/17) * 13, (Math.PI*2/17) * 14, (Math.PI*2/17) * 15, (Math.PI*2/17) * 16, (Math.PI*2/17) * 17]; //from 1 to math.pi * 2
 
 
 
@@ -57,16 +58,24 @@ const axesHelper = new THREE.AxesHelper( 50 );
 scene.add(lightHelper, gridHelper, axesHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0,0,0); //make sure that camera is looking at the origin of the scene
+controls.target.set(0,0,0);
 controls.dampingFactor = 0.05; 
-controls.enableDamping = true; // these lines =^ smoothen out the movement of camera
-// controls.target.set(latitudes[12],heights[12]/2,longitudes[12]); //panning to first warehoues
+controls.enableDamping = true;
+//controls.target.set(latitudes[12],heights[12]/2,longitudes[12]);
+
 let envmap;
 
 (async function() {
     let pmrem = new THREE.PMREMGenerator(renderer);
     let envmapTexture = await new RGBELoader().setDataType(THREE.FloatType).loadAsync("assets/envmap.hdr");
     envmap = pmrem.fromEquirectangular(envmapTexture).texture;
+
+    for(let i = 0; i < 17; i++){ 
+        let position = new Vector2(latitudes[i], longitudes[i]);   
+        makeWarehouseHexagon(heights[i]/2, position);
+        makeWarehouseModel(heights[i]/2 + 0.02, position, rotations[i]);
+        makeCircle(heights[i]/2 + 0.01, position);
+    }
 
     let hexagonMesh = new THREE.Mesh(
         hexagonGeometries,
@@ -77,13 +86,6 @@ let envmap;
         })
     )
     scene.add(hexagonMesh);         
-        
-    for(let i = 0; i < 17; i++){ 
-        let position = new Vector2(latitudes[i], longitudes[i]);   
-        makeWarehouseHexagon(heights[i]/2, position);
-        makeWarehouse(heights[i]/2 + 0.02, position);
-        makeCircle(heights[i]/2 + 0.01, position); // bug solved in dummy way
-    }
 
     let warehouseMesh = new THREE.Mesh(
         warehouseGeometries,
@@ -135,7 +137,7 @@ let envmap;
 let hexagonGeometries = new THREE.BoxGeometry(0,0,0);
 
 function hexGeometry(height, position) {
-    let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1, false); //I could use the the cylinder value of thetaLength 
+    let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1, false);
     geo.translate(position.x, height * 0.5, position.y);
     
     return geo;
@@ -163,13 +165,14 @@ function makeCircle(height, position) {
     circleGeometries = mergeBufferGeometries([circleGeometries, geo]);
 }
 
-function makeWarehouse(height1, position1){
+function makeWarehouseModel(height1, position1, rotation){
     const glftLoader = new GLTFLoader();
     glftLoader.load('./assets/scene.gltf', (glftScene) => {
         glftScene.scene.scale.set(0.3,0.3,0.3);
         glftScene.scene.position.x = position1.x;
         glftScene.scene.position.z = position1.y;
         glftScene.scene.position.y = height1;
+        glftScene.scene.rotateY(rotation); //Rotation of the warehouses
         scene.add(glftScene.scene)
     })
 }
@@ -251,8 +254,6 @@ function makePath(i, j) {
     let p = distanceVectorXZ(new THREE.Vector3(startSlopeX, yi, startSlopeZ), new THREE.Vector3(endSlopeX, yj, endSlopeZ));
     let hij = yi - yj;
     let inclinacao = Math.atan2(p,hij);
-    
-    // let pij = Math.sqrt(Math.pow((xj - xi),2) + Math.pow((yj - yi),2)) - si - sj;
 
     const roadTexture = new THREE.TextureLoader().load( 'assets/roadText.jpg' );
 
@@ -268,7 +269,6 @@ function makePath(i, j) {
 
     planeFirstLinkEle.rotateY(alpha);
     planeFirstLinkEle.rotateX(Math.PI*0.5);
-    
     
     scene.add( planeFirstLinkEle );
 
