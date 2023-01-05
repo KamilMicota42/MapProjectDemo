@@ -28,7 +28,7 @@ const longitudes = [-50.0000, 26.6951, 50.0000, 22.8206, 37.4080, -5.0756, 33.47
 const latitudes = [-42.6618, -36.7615, 50.0000, -19.4217, -22.8394, -50.0000, -21.2052, -24.9214, -7.4403, -43.0783, -10.3708, -45.1446, -10.6851, -49.6622, -22.5016, -9.6952, -27.5927];
 const heights = [15.6250, 34.3750, 12.5000, 43.7500, 21.8750, 46.8750, 0.0000, 37.5000, 25.0000, 6.2500, 40.6250, 18.7500, 28.1250, 3.1250, 50.0000, 9.3750, 31.2500];
 const rotations = [(Math.PI*2/17) * 1, (Math.PI*2/17) * 2, (Math.PI*2/17) * 3, (Math.PI*2/17) * 4, (Math.PI*2/17) * 5, (Math.PI*2/17) * 6, (Math.PI*2/17) * 7, (Math.PI*2/17) * 8, (Math.PI*2/17) * 9, (Math.PI*2/17) * 10, (Math.PI*2/17) * 11, (Math.PI*2/17) * 12, (Math.PI*2/17) * 13, (Math.PI*2/17) * 14, (Math.PI*2/17) * 15, (Math.PI*2/17) * 16, (Math.PI*2/17) * 17]; //from 1 to math.pi * 2
-
+const width = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 0.5, 0.6, 0.7, 0.8, 0.9, 0.5, 0.6, 0.7, 0.5, 0.6, 0.7]; //from 0.3 to 1
 
 
 
@@ -61,7 +61,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,0,0);
 controls.dampingFactor = 0.05; 
 controls.enableDamping = true;
-//controls.target.set(latitudes[12],heights[12]/2,longitudes[12]);
 
 let envmap;
 
@@ -111,22 +110,22 @@ let envmap;
     )
     scene.add(circleMesh);
     
-    makePath(10, 14);
-    makePath(10, 12);
-    makePath(12, 6);
-    makePath(12, 2);
-    makePath(12, 11);
-    makePath(0, 13);
-    makePath(13, 11);
-    makePath(11, 9);
-    makePath(9, 4);
-    makePath(4, 8);
-    makePath(14, 1);
-    makePath(14, 5);
-    makePath(6, 15);
-    makePath(5, 16);
-    makePath(14, 3);
-    makePath(7, 1);
+    makePath(10, 14, width[0]);
+    makePath(10, 12, width[1]);
+    makePath(12, 6, width[2]);
+    makePath(12, 2, width[3]);
+    makePath(12, 11, width[4]);
+    makePath(0, 13, width[5]);
+    makePath(13, 11, width[6]);
+    makePath(11, 9, width[7]);
+    makePath(9, 4, width[8]);
+    makePath(4, 8, width[9]);
+    makePath(14, 1, width[10]);
+    makePath(14, 5, width[11]);
+    makePath(6, 15, width[12]);
+    makePath(5, 16, width[13]);
+    makePath(14, 3, width[14]);
+    makePath(7, 1, width[15]);
 
     renderer.setAnimationLoop(() => {
         controls.update();
@@ -194,7 +193,7 @@ function distanceVectorXZ( v1, v2 )
     return Math.sqrt( dx * dx + dz * dz );
 }
 
-function makePath(i, j) {
+function makePath(i, j, w) {
     
     let position1 = new Vector3( latitudes[i], heights[i]/2, longitudes[i]);
     let position2 = new Vector3( latitudes[j], heights[j]/2, longitudes[j]);
@@ -258,7 +257,7 @@ function makePath(i, j) {
     const roadTexture = new THREE.TextureLoader().load( 'assets/roadText.jpg' );
 
     //FIRST LINK ELEMENT
-    const geometryFirstLinkEle = new THREE.PlaneGeometry(1, distanceFirstLink);
+    const geometryFirstLinkEle = new THREE.PlaneGeometry(w, distanceFirstLink);
     const materialFirstLinkEle = new THREE.MeshBasicMaterial({
         color: 0x53565a, 
         side: THREE.DoubleSide,
@@ -273,7 +272,7 @@ function makePath(i, j) {
     scene.add( planeFirstLinkEle );
 
     //SLOPE ELEMENT
-    const geometrySlope = new THREE.PlaneGeometry(1, distanceSlope);
+    const geometrySlope = new THREE.PlaneGeometry(w, distanceSlope);
     const materialSlope = new THREE.MeshBasicMaterial({
         color: 0x53565a, 
         side: THREE.DoubleSide,
@@ -288,7 +287,7 @@ function makePath(i, j) {
     scene.add( planeSlope );
 
     //SECOND LINK ELEMENT
-    const geometrySecLinkEle = new THREE.PlaneGeometry(1, distanceSecLink);
+    const geometrySecLinkEle = new THREE.PlaneGeometry(w, distanceSecLink);
     const materialSecLinkEle = new THREE.MeshBasicMaterial({
         color: 0x53565a, 
         side: THREE.DoubleSide,
