@@ -6,6 +6,7 @@ import { Vector2, Vector3 } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { VOXLoader } from 'three/examples/jsm/loaders/VOXLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { Mesh } from 'three';
 
 
 // Pallete used in project
@@ -75,8 +76,11 @@ let envmap;
         makeWarehouseHexagon(heights[i]/2, position);
         makeWarehouseModel(heights[i]/2 + 0.02, position, rotations[i]);
         makeCircle(heights[i]/2 + 0.01, position);
-        makeTruckModel(heights[i]/2 + 2, position);
     }
+
+    //example of truck
+    makeTruckModel(heights[10]/2 + 2, new Vector2(latitudes[10], longitudes[10]));
+    
 
     let hexagonMesh = new THREE.Mesh(
         hexagonGeometries,
@@ -131,6 +135,7 @@ let envmap;
 
     renderer.setAnimationLoop(() => {
         controls.update();
+        controls.target = new THREE.Vector3(latitudes[10], heights[10]/2 + 2, longitudes[10]); //there goes truck object
         renderer.render(scene, camera);
     });
 })();
