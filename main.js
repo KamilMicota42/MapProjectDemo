@@ -75,6 +75,7 @@ let envmap;
         makeWarehouseHexagon(heights[i]/2, position);
         makeWarehouseModel(heights[i]/2 + 0.02, position, rotations[i]);
         makeCircle(heights[i]/2 + 0.01, position);
+        makeTruckModel(heights[i]/2 + 2, position);
     }
 
     let hexagonMesh = new THREE.Mesh(
@@ -167,12 +168,23 @@ function makeCircle(height, position) {
 
 function makeWarehouseModel(height1, position1, rotation){
     const glftLoader = new GLTFLoader();
-    glftLoader.load('./assets/scene.gltf', (glftScene) => {
+    glftLoader.load('./assets/warehouseModel/scene.gltf', (glftScene) => {
         glftScene.scene.scale.set(0.3,0.3,0.3);
         glftScene.scene.position.x = position1.x;
         glftScene.scene.position.z = position1.y;
         glftScene.scene.position.y = height1;
         glftScene.scene.rotateY(rotation); //Rotation of the warehouses
+        scene.add(glftScene.scene)
+    })
+}
+
+function makeTruckModel(height1, position1){
+    const glftLoader = new GLTFLoader();
+    glftLoader.load('./assets/truckModel/scene.gltf', (glftScene) => {
+        glftScene.scene.scale.set(1,1,1);
+        glftScene.scene.position.x = position1.x;
+        glftScene.scene.position.z = position1.y;
+        glftScene.scene.position.y = height1;
         scene.add(glftScene.scene)
     })
 }
