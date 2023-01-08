@@ -379,8 +379,9 @@ function move(key) {
         const x = (sphere.position.x - longitudes[i]) * Math.cos(angle) + (sphere.position.z - latitudes[i]) * Math.sin(angle);
         const z = (sphere.position.z - latitudes[i]) * Math.cos(angle) - (sphere.position.x - longitudes[i]) * Math.sin(angle);
           // Calculate the slope of the connecting element
-        
         const slope = (heights[j] - heights[i]) / (longitudes[j] - longitudes[i]);
+        const y = slope * (sphere.position.x - longitudes[i]) + heights[i];
+
         // Calculate the y-intercept of the connecting element
         const intercept = heights[i] - slope * longitudes[i];
         // Calculate the x-coordinate of the point on the connecting element that is closest to the sphere's current position
@@ -389,8 +390,10 @@ function move(key) {
         // Calculate the z-coordinate of the point on the connecting element that is closest to the sphere's current position
         const zClosest = (sphere.position.z + slope * sphere.position.x - intercept) / (1 + 1 / slope ** 2);
         
+        
         // Calculate the distance between the sphere's current position and the closest point on the connecting element
         const distance = Math.sqrt((xClosest - sphere.position.x) ** 2 + (zClosest - sphere.position.z) ** 2);
+        
         // Check if the distance is within the width of the connecting element
         if (distance <= width[i] / 2) {
           // Calculate the y-coordinate of the point on the connecting element that is closest to the sphere's current position
@@ -416,8 +419,6 @@ window.addEventListener('keydown', event => {
   move(event.key);
 });
 //console.log(j);
-
-
 
 
 function animate() {
