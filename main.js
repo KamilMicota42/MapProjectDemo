@@ -3,8 +3,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { mergeBufferGeometries } from 'https://cdn.skypack.dev/three-stdlib@2.8.5/utils/BufferGeometryUtils';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Vector2, Vector3 } from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { VOXLoader } from 'three/examples/jsm/loaders/VOXLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Mesh } from 'three';
 
@@ -73,13 +71,14 @@ let envmap;
 
     for(let i = 0; i < 17; i++){ 
         let position = new Vector2(latitudes[i], longitudes[i]);   
-        makeWarehouseHexagon(heights[i]/2, position);
-        makeWarehouseModel(heights[i]/2 + 0.02, position, rotations[i]);
+        //makeWarehouseHexagon(heights[i]/2, position);
+        //makeWarehouseModel(heights[i]/2 + 0.02, position, rotations[i]);
         makeCircle(heights[i]/2 + 0.01, position);
     }
 
     //example of truck
-    makeTruckModel(heights[10]/2 + 2, new Vector2(latitudes[10], longitudes[10]));
+    //const truck = makeTruckModel(heights[10]/2+0.1, new Vector2(latitudes[10], longitudes[10]+0.7));
+    
     
 
     let hexagonMesh = new THREE.Mesh(
@@ -223,11 +222,11 @@ function makePath(i, j, w) {
     let xj=position2.x, yj=position2.y, zj=position2.z;
             
     let ri=1.5;
-    let K_LIGACAO=1.5;
+    let K_LINK=1.5;
     let rj=1.5;
-    let sj=K_LIGACAO*rj;
+    let sj=K_LINK*rj;
 
-    let si=K_LIGACAO*ri;
+    let si=K_LINK*ri;
     let alpha = Math.atan2((xj - xi),(zj - zi));//*180/Math.PI;
 
     console.log(alpha);
@@ -319,3 +318,121 @@ function makePath(i, j, w) {
 
     scene.add( planeSecLinkEle );
 }
+
+
+//const truck = makeTruckModel(heights[10]/2+0.1, new Vector2(latitudes[10], longitudes[10]+0.7));
+
+
+window.addEventListener('keydown', (event) => {
+    console.log(`Keydown event triggered: ${event.code}`, sphere.position);
+});
+
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry(0.05, 32, 32),
+  new THREE.MeshBasicMaterial({ color: 0xffffff })
+);
+
+sphere.position.set(latitudes[10], heights[10]/2 + sphere.geometry.parameters.radius, longitudes[10]+0.7);
+scene.add(sphere);
+
+const speed = 0.05;
+let direction = 0;
+console.log(sphere.position);
+
+
+function move(key) {
+  if (key === 'a') {
+      // Rotate the character counterclockwise
+    direction -= 4*Math.PI / 180;
+  } else if (key === 'd') {
+    // Rotate the character clockwise
+    direction += 4*Math.PI / 180;
+  } else if (key === 'w') {
+    // Update the character's position based on its velocity and direction
+    sphere.position.x += speed * Math.cos(direction);
+    sphere.position.z += speed * Math.sin(direction);
+  } else if (key === 's') {
+    // Update the character's position based on its velocity and direction, but in the opposite direction
+    sphere.position.x -= speed * Math.cos(direction);
+    sphere.position.z -= speed * Math.sin(direction);
+  }
+  for (let i = 0; i < names.length; i++) {
+    // Check if the sphere is within the circle representing the node
+    const dx = sphere.position.x - longitudes[i];
+    const dz = sphere.position.z - latitudes[i];
+    const distance = Math.sqrt(dx * dx + dz * dz);
+    if (distance <= width[i]) {
+      currentNode = i; // Update the current node
+      sphere.position.x = longitudes[i]; // Snap the sphere to the node
+      sphere.position.z = latitudes[i];
+      sphere.position.y = heights[i] + sphere.geometry.parameters.radius; // Adjust height to match sphere height
+      direction = rotations[i];
+      break; // Stop checking for collisions with other nodes
+    }
+    // Check if the sphere is within the connecting element between this node and each of its neighbors
+    for (let j = 0; j < longitudes.length; j++) {
+      if (i !== j) {
+        // Calculate the angle between the connecting element and the x-axis
+        const angle = Math.atan2(latitudes[j] - latitudes[i], longitudes[j] - longitudes[i]);
+  
+        // Calculate the sphere's position in the new coordinate system
+        const x = (sphere.position.x - longitudes[i]) * Math.cos(angle) + (sphere.position.z - latitudes[i]) * Math.sin(angle);
+        const z = (sphere.position.z - latitudes[i]) * Math.cos(angle) - (sphere.position.x - longitudes[i]) * Math.sin(angle);
+          // Calculate the slope of the connecting element
+        
+        const slope = (heights[j] - heights[i]) / (longitudes[j] - longitudes[i]);
+        // Calculate the y-intercept of the connecting element
+        const intercept = heights[i] - slope * longitudes[i];
+        // Calculate the x-coordinate of the point on the connecting element that is closest to the sphere's current position
+        const xClosest = (sphere.position.x + slope * sphere.position.z - slope * intercept) / (1 + slope **2);
+
+        // Calculate the z-coordinate of the point on the connecting element that is closest to the sphere's current position
+        const zClosest = (sphere.position.z + slope * sphere.position.x - intercept) / (1 + 1 / slope ** 2);
+        
+        // Calculate the distance between the sphere's current position and the closest point on the connecting element
+        const distance = Math.sqrt((xClosest - sphere.position.x) ** 2 + (zClosest - sphere.position.z) ** 2);
+        // Check if the distance is within the width of the connecting element
+        if (distance <= width[i] / 2) {
+          // Calculate the y-coordinate of the point on the connecting element that is closest to the sphere's current position
+          const y = slope * (sphere.position.x - longitudes[i]) + heights[i];
+          sphere.position.y = y;
+          // Check if the point on the connecting element that is closest to the sphere's current position is within the limits of the connecting element
+          if (x > -width[i] / 2 && x < width[i] / 2) {
+            // Update the sphere's position to the point on the connecting element that is closest to its current position
+            sphere.position.x = xClosest;
+            sphere.position.z = zClosest;
+            // Adjust height to match the height of the connecting element
+            direction=angle;
+            
+          }
+        }
+      }
+    }
+  }
+}
+  
+
+window.addEventListener('keydown', event => {
+  move(event.key);
+});
+//console.log(j);
+
+
+
+
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+
+//-3.381864920450932
+//stickToRoad(){
+  //force character to be on the road:
+    //1) need to be "planted" to it 
+      // sphere.position.y+ sphere.geometry.parameters.radius = pathHeight ()
+    //2) can not go outside the width
+//}
+
+animate();
+
+
