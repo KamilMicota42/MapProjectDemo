@@ -350,7 +350,7 @@ window.addEventListener('keydown', (event) => {
 let radius = 1-0.3 ; // radius of the circle
 let angularVelocity = 0.01;
 let center = new THREE.Vector2(-10.55, 10.3+0.6); 
-let dir = 0.7;
+let dir = 0.4;
 
 function moveC() {
   character.position.z += 0.01*dir; 
@@ -360,6 +360,7 @@ function moveD(){
   character.position.z += 0.0116*dir;
   character.position.y -= 0.011*dir;
   character.rotation.x = - 1.1;
+  character.position.x -= 0.0001*dir; 
 }
 
 function moveE(){
